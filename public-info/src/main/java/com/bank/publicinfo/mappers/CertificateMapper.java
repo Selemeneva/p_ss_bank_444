@@ -1,20 +1,30 @@
 package com.bank.publicinfo.mappers;
 
-
-import com.bank.publicinfo.dto.BranchDto;
 import com.bank.publicinfo.dto.CertificateDto;
-import com.bank.publicinfo.model.Branch;
 import com.bank.publicinfo.model.Certificate;
-import com.bank.publicinfo.service.BankDetailsService;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring", uses = CertificateMapper.class)
+import java.util.List;
+
+
+@Mapper(componentModel = "spring")
 public interface CertificateMapper {
-    @Mapping(source = "bankDetails.id", target = "bankDetailsId")
+
+    //Создание экземпляра CertificateMapper
+
+    CertificateMapper INSTANCE = Mappers.getMapper(CertificateMapper.class);
+
+    @Mapping(target = "bankDetailsId", source = "bankDetails.id")
     CertificateDto toDto(Certificate certificate);
-    @Mapping(target = "bankDetails", expression = "java(bankDetailsService.findById(certificateDto.getBankDetailsId()))")
-    Certificate toEntity(CertificateDto certificateDto, @Context BankDetailsService bankDetailsService);
+
+    @Mapping(target = "bankDetails.id", source = "bankDetailsId")
+    Certificate toEntity(CertificateDto certificateDto);
+
+    List<CertificateDto> toDto(List<Certificate> certificateList);
+    List<Certificate> toEntity(List<CertificateDto> certificateDtoList);
+
 }
+
 

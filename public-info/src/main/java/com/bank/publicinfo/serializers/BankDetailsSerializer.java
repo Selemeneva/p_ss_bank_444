@@ -1,7 +1,6 @@
 package com.bank.publicinfo.serializers;
 
 import com.bank.publicinfo.model.BankDetails;
-import com.bank.publicinfo.model.Branch;
 import com.bank.publicinfo.model.Certificate;
 import com.bank.publicinfo.model.License;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -10,6 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BankDetailsSerializer extends StdSerializer<BankDetails> {
@@ -34,7 +34,13 @@ public class BankDetailsSerializer extends StdSerializer<BankDetails> {
         jsonGenerator.writeStringField("jointStockCompany", bankDetails.getJointStockCompany());
         jsonGenerator.writeStringField("name", bankDetails.getName());
 
-
+        for (Certificate certificate : bankDetails.getCertificates()) {
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeStringField("id", String.valueOf(certificate.getId()));
+            jsonGenerator.writeStringField("photo", Arrays.toString(certificate.getPhoto()));
+            jsonGenerator.writeStringField("bankDetailsId", String.valueOf(bankDetails.getId()));
+            jsonGenerator.writeEndObject();
+        }
         if (bankDetails.getCertificates() != null) {
             for (Certificate certificate : bankDetails.getCertificates())
                 certificateList.add(certificate.getId());

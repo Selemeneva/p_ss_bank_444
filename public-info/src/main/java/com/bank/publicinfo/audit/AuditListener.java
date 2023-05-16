@@ -10,14 +10,8 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import javax.persistence.*;
+import java.time.*;
 
 /**
  * Класс AuditListener предназначен для отслеживания жизненного цикла экземпляров BaseEntity
@@ -38,19 +32,24 @@ public class AuditListener {
     public AuditListener() {
     }
 
+    public AuditListener(org.apache.naming.factory.BeanFactory beanFactory) {
+    }
+
     /**
      * Метод prePersist вызывается перед сохранением сущности
      * и сохраняет в сущности информацию о создании.
      *
      * @param entity Объект сущности, который будет сохранен.
      */
+
+
+
     @PrePersist
     public void prePersist(BaseClass entity) throws JsonProcessingException {
         AuditRepository auditRepository = beanFactory.getBean(AuditRepository.class);
 
         String createdBy = "Somebody";
-        OffsetDateTime createdAt = OffsetDateTime.now();
-
+        LocalDateTime createdAt = LocalDateTime.now();
         entity.setCreatedAt(createdAt);
         entity.setCreatedBy(createdBy);
     }
@@ -69,7 +68,7 @@ public class AuditListener {
                 .entityType(entity.getClass().getSimpleName())
                 .operationType("CREATE")
                 .createdBy(entity.getCreatedBy())
-                .createdAt(entity.getCreatedAt().toLocalDateTime())
+                .createdAt(entity.getCreatedAt())
                 .entityJson(objectMapper.writeValueAsString(entity))
                 .build();
 
@@ -85,7 +84,7 @@ public class AuditListener {
     @PreUpdate
     public void preUpdate(BaseClass entity) throws JsonProcessingException {
         entity.setModifiedBy("Somebody");
-        entity.setModifiedAt(OffsetDateTime.now());
+        entity.setModifiedAt(LocalDateTime.now());
     }
 
     /**
@@ -104,9 +103,9 @@ public class AuditListener {
                 .entityType(entity.getClass().getSimpleName())
                 .operationType("UPDATE")
                 .createdBy(entity.getCreatedBy())
-                .createdAt(entity.getCreatedAt().toLocalDateTime())
+                .createdAt(entity.getCreatedAt())
                 .modifiedBy(entity.getModifiedBy())
-                .modifiedAt(entity.getModifiedAt().toLocalDateTime())
+                .modifiedAt(entity.getModifiedAt())
                 .newEntityJson(newJson)
                 .entityJson(entityJson)
                 .build();
@@ -129,7 +128,7 @@ public class AuditListener {
                 .entityType(entity.getClass().getSimpleName())
                 .operationType("DELETE")
                 .createdBy(entity.getCreatedBy())
-                .createdAt(entity.getCreatedAt().toLocalDateTime())
+                .createdAt(entity.getCreatedAt())
                 .modifiedBy("Somebody")
                 .modifiedAt(OffsetDateTime.now().toLocalDateTime())
                 .entityJson(entityJson)

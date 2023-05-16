@@ -1,20 +1,29 @@
 package com.bank.publicinfo.mappers;
 
 import com.bank.publicinfo.dto.AtmDto;
-import com.bank.publicinfo.dto.BranchDto;
 import com.bank.publicinfo.model.Atm;
-import com.bank.publicinfo.model.Branch;
-import com.bank.publicinfo.service.BankDetailsService;
-import com.bank.publicinfo.service.BranchService;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring", uses = AtmMapper.class)
+import java.util.List;
+
+@Mapper(componentModel = "spring")
 public interface AtmMapper {
-    @Mapping(target = "branch", expression = "java(branchService.findById(atmDto.getBranchId()))")
-    Atm toEntity(AtmDto atmDto, @Context BranchService branchService);
+    /**
+     * Создание экземпляра AtmMapper.
+     */
 
-    @Mapping(source = "branch.id", target = "branchId")
+     AtmMapper INSTANCE = Mappers.getMapper(AtmMapper.class);
+
+    @Mapping(target = "branchId", source = "branch.id")
     AtmDto toDto(Atm atm);
+
+    @Mapping(target = "branch.id", source = "branchId")
+    Atm toEntity(AtmDto atmDto);
+
+
+    List<AtmDto> toDto(List<Atm> atmList);
+    List<Atm> toEntity(List<AtmDto> atmDto);
+
 }

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 /**
  *Абстрактный класс BaseEntity является родительским классом для сущностей Registration, Passport, ActualRegistration,
@@ -37,8 +37,8 @@ public abstract class BaseClass {
 
     @NotEmpty(message = "Время создания объекта не может быть пустым")
     @Column(name = "created_at")
-    private OffsetDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "modified_at")
-    private OffsetDateTime modifiedAt;
+    private LocalDateTime modifiedAt;
 }

@@ -1,23 +1,20 @@
 package com.bank.publicinfo.model;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.bank.publicinfo.serializers.CertificateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+@JsonSerialize(using = CertificateSerializer.class)
 @Entity
-@Table(name = "сertificate", schema = "public_bank_information")
-@Data
+@Table(name = "certificate", schema = "public_bank_information")
+@Setter
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Certificate extends BaseClass {
     //сертификаты банка
     @Id
@@ -26,7 +23,7 @@ public class Certificate extends BaseClass {
     @Column
     private byte[] photo;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bank_details_id")
+    @JoinColumn(name = "bankDetailsId", referencedColumnName = "id")
     private BankDetails bankDetails;
 
 

@@ -1,6 +1,5 @@
 package com.bank.publicinfo.serializers;
 
-import com.bank.publicinfo.model.Atm;
 import com.bank.publicinfo.model.Certificate;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -30,7 +29,7 @@ public class CertificateSerializer extends StdSerializer<Certificate> {
         }
         else
             bankDetailsId = null;
-        jsonGenerator.writeStringField("branchId", String.valueOf(bankDetailsId));
+        jsonGenerator.writeStringField("bankDetailsId", String.valueOf(bankDetailsId));
         jsonGenerator.writeEndObject();
     }
 

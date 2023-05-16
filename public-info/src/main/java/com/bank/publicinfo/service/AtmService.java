@@ -1,17 +1,16 @@
 package com.bank.publicinfo.service;
 
-import com.bank.publicinfo.model.Atm;
+import com.bank.publicinfo.dto.AtmDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 
 public interface AtmService {
-    void save(Atm atm);
-    List<Atm> findAll();
+    void save(AtmDto atmDto);
+    List<AtmDto> findAll();
     boolean existById(Long id);
-    Atm findById(Long id);
-    void update(Atm atm) throws JsonProcessingException;
-    void update(Atm atm, Long id) throws JsonProcessingException;
+    AtmDto findById(Long id);
+    void update(AtmDto atmDto, Long id) throws JsonProcessingException;
     void deleteById(Long id);
 
 }

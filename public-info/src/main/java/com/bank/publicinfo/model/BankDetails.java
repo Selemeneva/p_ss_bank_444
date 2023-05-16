@@ -1,27 +1,24 @@
 package com.bank.publicinfo.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.bank.publicinfo.serializers.BankDetailsSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
+@JsonSerialize(using = BankDetailsSerializer.class)
 @Entity
 @Table(name="bank_details", schema = "public_bank_information")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class BankDetails extends BaseClass{
     //реквизиты банка (ИНН, КПП, р/с и т.д.)
     @Id
@@ -43,7 +40,7 @@ public class BankDetails extends BaseClass{
     @Column(unique = true)
     @Size (min = 0, max = 20, message = "cor_account must be from 0 to 20 numbers")
     @Positive(message = "cor_account must be positive")
-    private Long corAccount;
+    private Integer corAccount;
     @Column
     @Size(max = 180, message = "length must be not more 180 symbols")
     private String city;
@@ -53,8 +50,9 @@ public class BankDetails extends BaseClass{
     @Column
     @Size(max = 80, message = "length must be not more 80 symbols")
     private String name;
-    @OneToMany(mappedBy = "bankDetails", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bankDetails", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("bankDetails")
     private Set<Certificate> certificates= new HashSet<>();
-    @OneToMany(mappedBy = "bankDetails", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bankDetails", fetch = FetchType.LAZY)
     private Set<License> licenses = new HashSet<>();
 }

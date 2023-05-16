@@ -1,17 +1,20 @@
 package com.bank.publicinfo.dto;
 
-import com.bank.publicinfo.model.BankDetails;
-import lombok.Data;
+import lombok.*;
 
-import java.sql.Time;
+import java.time.LocalTime;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class BranchDto {
     private Long id;
     private String address;
     private Long phoneNumber;
     private String city;
-    private Time startOfWork;
-    private Time endOfWork;
-    private Long bankDetailsId;
+    private LocalTime startOfWork;
+    private LocalTime endOfWork;
+    //private Long bankDetailsId;
 }

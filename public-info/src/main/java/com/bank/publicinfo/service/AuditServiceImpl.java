@@ -2,7 +2,6 @@ package com.bank.publicinfo.service;
 
 import com.bank.publicinfo.model.Audit;
 import com.bank.publicinfo.repositories.AuditRepository;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service

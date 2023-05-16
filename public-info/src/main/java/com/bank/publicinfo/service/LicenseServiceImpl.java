@@ -1,13 +1,15 @@
 package com.bank.publicinfo.service;
 
+import com.bank.publicinfo.dto.LicenseDto;
+import com.bank.publicinfo.mappers.LicenseMapper;
 import com.bank.publicinfo.model.License;
 import com.bank.publicinfo.repositories.LicenseRepository;
 import com.bank.publicinfo.util.EntityJsonBeforeUpdateSaver;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,27 +21,34 @@ public class LicenseServiceImpl implements LicenseService{
     }
     @Transactional
     @Override
-    public void save(License license) {
-        license.setId(null);
+    public void save(LicenseDto licenseDto) {
+        licenseDto.setId(null);
+        License license = LicenseMapper.INSTANCE.toEntity(licenseDto);
         licenseRepository.save(license);
     }
     @Override
-    public List<License> findAll() {return licenseRepository.findAll();}
+    public List<LicenseDto> findAll() {
+        return licenseRepository.findAll().stream()
+                .map(LicenseMapper.INSTANCE::toDto)
+                .toList();
+    }
     @Override
     public boolean existById(Long id) {return licenseRepository.existsById(id);}
     @Override
-    public License findById(Long id) {return licenseRepository.getReferenceById(id); }
+    public LicenseDto findById(Long id) {
+        License license = licenseRepository.getReferenceById(id);
+        return LicenseMapper.INSTANCE.toDto(license);
+    }
     @Transactional
     @Override
-    public void update(License license) throws JsonProcessingException {}
-
-    @Transactional
-    @Override
-    public void update(License license, Long id) throws JsonProcessingException {
-        License licenseBeforeUpdate = findById(id);
-        license.setCreatedBy(licenseBeforeUpdate.getCreatedBy());
-        license.setCreatedAt(licenseBeforeUpdate.getCreatedAt());
-        EntityJsonBeforeUpdateSaver.saveEntityJsonBeforeUpdate(licenseBeforeUpdate);
+    public void update(LicenseDto licenseDto, Long id) throws JsonProcessingException {
+        LicenseDto licenseBeforeUpdate = findById(id);
+        License license = LicenseMapper.INSTANCE.toEntity(licenseBeforeUpdate);
+        if (license !=null) {
+            license.setCreatedBy("Somebody");
+            license.setCreatedAt(LocalDateTime.now());
+        }
+        EntityJsonBeforeUpdateSaver.saveEntityJsonBeforeUpdate(license);
         licenseRepository.save(license);
     }
 

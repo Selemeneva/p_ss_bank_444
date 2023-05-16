@@ -1,6 +1,5 @@
 package com.bank.publicinfo.serializers;
 
-import com.bank.publicinfo.model.Certificate;
 import com.bank.publicinfo.model.License;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

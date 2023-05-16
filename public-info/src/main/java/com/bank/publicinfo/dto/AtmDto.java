@@ -1,13 +1,19 @@
 package com.bank.publicinfo.dto;
-import lombok.Data;
-import java.sql.Time;
+import lombok.*;
 
-@Data
+import java.sql.Time;
+import java.time.LocalTime;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class AtmDto {
     private Long id;
     private String address;
-    private Time startOfWork;
-    private Time endOfWork;
+    private LocalTime startOfWork;
+    private LocalTime endOfWork;
     private boolean allHours;
     private Long branchId;
 }

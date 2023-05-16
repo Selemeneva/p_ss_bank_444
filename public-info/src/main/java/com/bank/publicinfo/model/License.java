@@ -1,23 +1,20 @@
 package com.bank.publicinfo.model;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.bank.publicinfo.serializers.LicenseSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+@JsonSerialize(using = LicenseSerializer.class)
 @Entity
 @Table(name="license", schema = "public_bank_information")
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class License extends BaseClass{
     //лицензии банка
     @Id
@@ -28,7 +25,7 @@ public class License extends BaseClass{
     private byte[] photo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bank_details_id")
+    @JoinColumn(name = "bankDetailsId", referencedColumnName = "id")
     private BankDetails bankDetails;
 
 
